@@ -128,3 +128,14 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Solidity compiler artifacts
+*.json
+*.abi
+*.bin
+*.bin-runtime
+*.abi.json
+*.bin.json
+*.srcmap
+*.srcmap.json
+*.sol.js
