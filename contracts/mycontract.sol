@@ -87,28 +87,27 @@ contract Splitwise {
                     return;
                 } else {
                     // Still has owe remain
-
                     _amount -= creditor.amount;
                     delete debtors[_creditorAddr][i];
-
-                    // Find a creditor that I owes (เราเคยยืมเขา +เพิ่ม)
-                    for (uint256 j = 0; j < debtors[_debtorAddr].length; j++) {
-                        Creditor memory debtor = debtors[_debtorAddr][j];
-
-                        // Find if this debtor owe with this creditor? to update an owning amount
-                        if (debtor.credAddr == _creditorAddr) {
-                            debtor.amount += _amount;
-                            return;
-                        }
-                    }
-
-                    // Never borrow this creditor
-                    Creditor memory newDebt = Creditor(_creditorAddr, _amount);
-                    debtors[_debtorAddr].push(newDebt);
-                    return;
                 }
             }
         }
+        // Find a creditor that I owes (เราเคยยืมเขา +เพิ่ม)
+        for (uint256 j = 0; j < debtors[_debtorAddr].length; j++) {
+            Creditor memory debtor = debtors[_debtorAddr][j];
+
+            // Find if this debtor owe with this creditor? to update an owning amount
+            if (debtor.credAddr == _creditorAddr) {
+                debtor.amount += _amount;
+                return;
+            }
+        }
+
+        // Never borrow this creditor
+        Creditor memory newDebt;
+        newDebt.credAddr = _creditorAddr;
+        newDebt.amount = _amount;
+        debtors[_debtorAddr].push(newDebt);
     }
 
     // UTILs function
