@@ -219,7 +219,7 @@ var abi = [
 abiDecoder.addABI(abi);
 // call abiDecoder.decodeMethod to use this - see 'getAllFunctionCalls' for more
 
-var contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"; // FIXME: fill this in with your contract's address/hash
+var contractAddress = "0x67d269191c92Caf3cD7723F116c85e6E9bf55933"; // FIXME: fill this in with your contract's address/hash
 
 var BlockchainSplitwise = new ethers.Contract(contractAddress, abi, provider.getSigner());
 
@@ -238,13 +238,6 @@ async function getUsers() {
 // TODO: Get the total amount owed by the user specified by 'user'
 async function getTotalOwed(user) {
 	return await BlockchainSplitwise.getTotalOwedAmount(user)
-	// totalOwed = 0
-	// owedData = await BlockchainSplitwise.getOwedData(user)
-
-	// for (i = 0; i < owedData.length; i++) {
-	// 	totalOwed += owedData[i].amount
-	// }
-	// return totalOwed
 }
 
 // TODO: Get the last time this user has sent or received an IOU, in seconds since Jan. 1, 1970
@@ -260,7 +253,10 @@ async function getLastActive(user) {
 // The person you owe money is passed as 'creditor'
 // The amount you owe them is passed as 'amount'
 async function add_IOU(creditor, amount) {
-	return await BlockchainSplitwise.add_IOU(creditor, amount)
+  const signer = provider.getSigner(defaultAccount);
+  const contract = new ethers.Contract(contractAddress, abi, signer);
+
+	return await contract.add_IOU(creditor, amount)
 }
 
 // =============================================================================
@@ -442,4 +438,4 @@ async function sanityCheck() {
 	console.log("Final Score: " + score +"/21");
 }
 
-sanityCheck() //Uncomment this line to run the sanity check when you first open index.html
+// sanityCheck() //Uncomment this line to run the sanity check when you first open index.html
