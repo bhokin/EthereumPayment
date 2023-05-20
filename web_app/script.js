@@ -251,7 +251,9 @@ async function getTotalOwed(user) {
 // Return null if you can't find any activity for the user.
 // HINT: Try looking at the way 'getAllFunctionCalls' is written. You can modify it if you'd like.
 async function getLastActive(user) {
-	
+	const functionCall = await getAllFunctionCalls(contractAddress, "add_IOU");
+  const userActivity = functionCall.find(f => f.from === user);
+  return userActivity ? new Date(userActivity.t) : null;
 }
 
 // TODO: add an IOU ('I owe you') to the system
