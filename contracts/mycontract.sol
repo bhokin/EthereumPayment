@@ -81,14 +81,17 @@ contract Splitwise {
 
             // Find if this creditor owe with this debtor? to update an owning amount
             if (creditor.credAddr == _debtorAddr) {
-                if (creditor.amount >= _amount) {
+                if (creditor.amount > _amount) {
                     // เขายืมเรา มากกว่า เราจะยืมเขา
                     creditor.amount -= _amount;
                     return;
                 } else {
                     // Still has owe remain
-                    _amount -= creditor.amount;
                     delete debtors[_creditorAddr][i];
+                    if (creditor.amount == _amount) {
+                        return;
+                    }
+                    _amount -= creditor.amount;
                 }
             }
         }
